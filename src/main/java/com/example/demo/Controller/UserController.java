@@ -20,7 +20,7 @@ import java.util.Optional;
 @Configuration
 @RestController
 @RequestMapping("x-cargo")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "https://portalxcargo-600185687970.us-central1.run.app")
 public class UserController {
 
     @Autowired
