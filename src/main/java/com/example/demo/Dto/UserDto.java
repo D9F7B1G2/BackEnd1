@@ -39,6 +39,8 @@ public class UserDto {
     private String apellido1;
     private String apellido2;
     private String password;
+    private String passwordAnterior;  // Nuevo campo
+    private String passwordConfirmacion;  // Nuevo campo
     private String departamento;
     private String tipoDocumento;
     private String estadoDeRegistro;

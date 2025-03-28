@@ -53,10 +53,48 @@ public class UserServices {
         return userRepository.findAll(); // Usa el repositorio para obtener todos los usuarios
     }
 
+/**
+ * La función findById(Long userId) devuelve un objeto Optional<User> al buscar un usuario 
+ * con el userId especificado en el userRepository.
+ * 
+ * @param userId El parámetro `userId` es de tipo `Long` y representa el identificador único 
+ * de un usuario en el sistema.
+ * @return Se devuelve un objeto Optional<User>.
+ */
+
+    public Optional<User> findById(Long userId) {
+        return userRepository.findById(userId);
+    }
+
     // Método para guardar un usuario
     public void saveUsers(User user) {
         userRepository.save(user);
     }
+    // Método para actualizar la contraseña de un usuario
+public String updatePassword(Long userId, String oldPassword, String newPassword, String confirmPassword) {
+    Optional<User> optionalUser = userRepository.findById(userId);
+    if (optionalUser.isPresent()) {
+        User user = optionalUser.get();
+        
+        // Verificar que la contraseña anterior sea correcta
+        if (!passwordEncoder.matches(oldPassword, user.getPassword())) {
+            return "La contraseña anterior es incorrecta.";
+        }
+        
+        // Verificar que la nueva contraseña y la confirmación coincidan
+        if (!newPassword.equals(confirmPassword)) {
+            return "La nueva contraseña y la confirmación no coinciden.";
+        }
+        
+        // Actualizar y encriptar la nueva contraseña
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        
+        return "Contraseña actualizada exitosamente.";
+    } else {
+        return "Usuario no encontrado.";
+    }
+}
     public User findByEmail(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         return user.orElse(null); // Devuelve el usuario si lo encuentra, o null si no existe
