@@ -116,5 +116,5 @@ public class User {
     private byte[] cvProfile;
 
     @Column(name = "img_profile")
-    private String imgProfile;
+    private byte[] imgProfile;
 }

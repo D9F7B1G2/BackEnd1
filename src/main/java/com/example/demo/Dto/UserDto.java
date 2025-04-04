@@ -45,6 +45,6 @@ public class UserDto {
     private String tipoDocumento;
     private String estadoDeRegistro;
     private byte[] cvProfile;
-    private String imgProfile;
+    private byte[] imgProfile;
 
 }
