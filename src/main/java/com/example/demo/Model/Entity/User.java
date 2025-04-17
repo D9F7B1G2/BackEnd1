@@ -112,9 +112,55 @@ public class User {
     @Column(name = "estado_de_registro")
     private String estadoDeRegistro;
 
-    @Column(name = "cv_profile")
-    private byte[] cvProfile;
-
     @Column(name = "img_profile")
     private byte[] imgProfile;
+
+    @Column(name = "ubicacion_lab")
+    private String ubicacionLab;
+
+    @Column(name = "cedula_pdf")
+    private byte[] cedulaPdf;
+
+    @Column(name = "cv_pdf")
+    private byte[] cv;
+
+    @Column(name = "certif_laboral_pdf")
+    private byte[] certifLaboral;
+
+    @Column(name = "certif_academica_pdf")
+    private byte[] certifAcademica;
+    
+    @Column(name = "certif_eps_pdf")
+    private byte[] certifEps;
+    
+    @Column(name = "certif_fondo_pension_pdf")
+    private byte[] certifFondoPension;
+    
+    @Column(name = "certif_arl_pdf")
+    private byte[] certifArl;
+
+    @Column(name = "certif_bancario_pdf")
+    private byte[] certifBancario;
+    
+    @Column(name = "certif_anteced_disciplinario_pdf")
+    private byte[] certifAntecedDisciplinario;
+    
+    @Column(name = "certif_anteced_fiscales_pdf")
+    private byte[] certifAntecedFiscales;
+    
+    @Column(name = "certif_anteced_penales_pdf")
+    private byte[] certifAntecedPenales;
+    
+    @Column(name = "libreta_militar_pdf")
+    private byte[] libretaMilitar;
+    
+    @Column(name = "certif_med_ocupacional_pdf")
+    private byte[] certifMedOcupacional;
+    
+    @Column(name = "refer_personales_pdf")
+    private byte[] referPersonales;
+
+    @Column (name = "id_rol")
+    private String idRol;
+
 }

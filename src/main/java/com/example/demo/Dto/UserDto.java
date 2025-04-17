@@ -39,12 +39,27 @@ public class UserDto {
     private String apellido1;
     private String apellido2;
     private String password;
-    private String passwordAnterior;  // Nuevo campo
-    private String passwordConfirmacion;  // Nuevo campo
+    private String passwordAnterior;  
+    private String passwordConfirmacion;  
     private String departamento;
     private String tipoDocumento;
     private String estadoDeRegistro;
-    private byte[] cvProfile;
     private byte[] imgProfile;
+    private String ubicacionLab;
+    private byte[] cedulaPdf;
+    private byte[] cv;
+    private byte[] certifLaboral;
+    private byte[] certifAcademica;
+    private byte[] certifEps;
+    private byte[] certifFondoPension;
+    private byte[] certifArl;
+    private byte[] certifBancario;
+    private byte[] certifAntecedDisciplinario;
+    private byte[] certifAntecedFiscales;
+    private byte[] certifAntecedPenales;
+    private byte[] libretaMilitar;
+    private byte[] certifMedOcupacional;
+    private byte[] referPersonales;
 
+    private String idRol;
 }

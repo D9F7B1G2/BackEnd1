@@ -68,9 +68,6 @@ public class AuthController {
         }
 
         try {
-            // Encriptar la contraseña antes de guardarla
-            registerDto.setPassword(passwordEncoder.encode(registerDto.getPassword()));
-
             User newUser = userServices.registerUser(registerDto);
             if (newUser != null) {
                 System.out.println("Usuario registrado exitosamente: " + newUser);
