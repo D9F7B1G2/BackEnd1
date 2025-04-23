@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Base64;
 import java.util.List;
@@ -236,313 +237,126 @@ public class UserServices {
         }
     }
 
-    /**
-     * The function `updateCedulaPdf` updates the cedula PDF for a user with the
-     * specified userId
-     * in a Java application.
-     * 
-     * @param userId    The `userId` parameter is the unique identifier of the user
-     *                  whose Cedula PDF
-     *                  is being updated.
-     * @param cedulaPdf The `updateCedulaPdf` method takes in a `userId` of type
-     *                  Long and a
-     *                  `cedulaPdf` of type byte array. The method updates the
-     *                  `cedulaPdf` for the user with the
-     *                  specified `userId` in the database. If the user is not found
-     *                  based on the
-     */
-    public void updateCedulaPdf(Long userId, byte[] cedulaPdf) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setCedulaPdf(cedulaPdf);
+    public String updateUserPdf(Long id, String documentType, MultipartFile file) {
+        try {
+            Optional<User> optionalUser = userRepository.findById(id);
+            if (optionalUser.isEmpty()) {
+                return "Usuario no encontrado";
+            }
+
+            User user = optionalUser.get();
+            byte[] fileBytes = file.getBytes();
+
+            switch (documentType) {
+                case "cedulaPdf":
+                    user.setCedulaPdf(fileBytes);
+                    break;
+                case "cv":
+                    user.setCv(fileBytes);
+                    break;
+                case "certifLaboral":
+                    user.setCertifLaboral(fileBytes);
+                    break;
+                case "certifAcademica":
+                    user.setCertifAcademica(fileBytes);
+                    break;
+                case "certifEps":
+                    user.setCertifEps(fileBytes);
+                    break;
+                case "certifFondoPension":
+                    user.setCertifFondoPension(fileBytes);
+                    break;
+                case "certifArl":
+                    user.setCertifArl(fileBytes);
+                    break;
+                case "certifBancario":
+                    user.setCertifBancario(fileBytes);
+                    break;
+                case "certifAntecedDisciplinario":
+                    user.setCertifAntecedDisciplinario(fileBytes);
+                    break;
+                case "certifAntecedFiscales":
+                    user.setCertifAntecedFiscales(fileBytes);
+                    break;
+                case "certifAntecedPenales":
+                    user.setCertifAntecedPenales(fileBytes);
+                    break;
+                case "libretaMilitar":
+                    user.setLibretaMilitar(fileBytes);
+                    break;
+                case "certifMedOcupacional":
+                    user.setCertifMedOcupacional(fileBytes);
+                    break;
+                case "referPersonales":
+                    user.setReferPersonales(fileBytes);
+                    break;
+                default:
+                    return "Tipo de documento no válido";
+            }
+
             userRepository.save(user);
-        } else {
-            throw new RuntimeException("Usuario no encontrado");
+            return "Documento PDF actualizado correctamente";
+        } catch (Exception e) {
+            return "Error al actualizar el documento PDF: " + e.getMessage();
         }
     }
 
-    /**
-     * The function `updateCv` updates the CV (curriculum vitae) of a user in the
-     * database based on
-     * the provided user ID and CV data.
-     * 
-     * @param userId The `userId` parameter is the unique identifier of the user
-     *               whose CV
-     *               (curriculum vitae) needs to be updated.
-     * @param cv     The `updateCv` method takes in a `userId` of type Long and a
-     *               `cv` of type byte
-     *               array. The method updates the CV (curriculum vitae) of the user
-     *               with the specified `userId`
-     *               in the database. If the user is found in the repository, the CV
-     */
-    public void updateCv(Long userId, byte[] cv) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setCv(cv);
-            userRepository.save(user);
-        } else {
-            throw new RuntimeException("Usuario no encontrado");
+    public byte[] getUserPdf(Long id, String documentType) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if (optionalUser.isEmpty()) {
+            return null;
         }
-    }
 
-    /**
-     * The function updates the certification of a user identified by their ID in a
-     * Java
-     * application.
-     * 
-     * @param userId        The `userId` parameter is the unique identifier of the
-     *                      user for whom the labor
-     *                      certificate is being updated.
-     * @param certifLaboral The `certifLaboral` parameter in the
-     *                      `updateCertifLaboral` method is a
-     *                      byte array that represents the user's labor
-     *                      certification document. This method updates the
-     *                      labor certification document for a specific user
-     *                      identified by their `userId`. If the user
-     *                      is found in the repository, the method sets
-     */
-    public void updateCertifLaboral(Long userId, byte[] certifLaboral) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setCertifLaboral(certifLaboral);
-            userRepository.save(user);
-        } else {
-            throw new RuntimeException("Usuario no encontrado");
-        }
-    }
+        User user = optionalUser.get();
+        byte[] fileData = null;
 
-    /**
-     * This Java function updates the academic certificate of a user identified by
-     * their ID in the
-     * database.
-     * 
-     * @param userId          The `userId` parameter is the unique identifier of the
-     *                        user whose academic
-     *                        certificate needs to be updated.
-     * @param certifAcademica The `certifAcademica` parameter in the
-     *                        `updateCertifAcademica` method
-     *                        is a byte array that represents the academic
-     *                        certificate of a user. This method updates the
-     *                        academic certificate of a user identified by their
-     *                        `userId` in the database.
-     */
-    public void updateCertifAcademica(Long userId, byte[] certifAcademica) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setCertifAcademica(certifAcademica);
-            userRepository.save(user);
-        } else {
-            throw new RuntimeException("Usuario no encontrado");
+        switch (documentType) {
+            case "cedulaPdf":
+                fileData = user.getCedulaPdf();
+                break;
+            case "cv":
+                fileData = user.getCv();
+                break;
+            case "certifLaboral":
+                fileData = user.getCertifLaboral();
+                break;
+            case "certifAcademica":
+                fileData = user.getCertifAcademica();
+                break;
+            case "certifEps":
+                fileData = user.getCertifEps();
+                break;
+            case "certifFondoPension":
+                fileData = user.getCertifFondoPension();
+                break;
+            case "certifArl":
+                fileData = user.getCertifArl();
+                break;
+            case "certifBancario":
+                fileData = user.getCertifBancario();
+                break;
+            case "certifAntecedDisciplinario":
+                fileData = user.getCertifAntecedDisciplinario();
+                break;
+            case "certifAntecedFiscales":
+                fileData = user.getCertifAntecedFiscales();
+                break;
+            case "certifAntecedPenales":
+                fileData = user.getCertifAntecedPenales();
+                break;
+            case "libretaMilitar":
+                fileData = user.getLibretaMilitar();
+                break;
+            case "certifMedOcupacional":
+                fileData = user.getCertifMedOcupacional();
+                break;
+            case "referPersonales":
+                fileData = user.getReferPersonales();
+                break;
+            default:
+                return null;
         }
-    }
 
-    /**
-     * The function updates the certificate of a user identified by their ID in a
-     * Java application.
-     * 
-     * @param userId    The `userId` parameter is the unique identifier of the user
-     *                  whose `certifEps`
-     *                  needs to be updated.
-     * @param certifEps The `certifEps` parameter in the `updateCertifEps` method is
-     *                  a byte array
-     *                  that represents the certificate of the user's EPS (Entidad
-     *                  Promotora de Salud). This method
-     *                  updates the EPS certificate for a specific user identified
-     *                  by their `userId`.
-     */
-    public void updateCertifEps(Long userId, byte[] certifEps) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setCertifEps(certifEps);
-            userRepository.save(user);
-        } else {
-            throw new RuntimeException("Usuario no encontrado");
-        }
-    }
-
-    /**
-     * This Java function updates the certificate of a user's pension fund based on
-     * the user's ID.
-     * 
-     * @param userId             The `userId` parameter is the unique identifier of
-     *                           the user whose fondo de
-     *                           pensiones (pension fund certificate) needs to be
-     *                           updated in the system.
-     * @param certifFondoPension The `certifFondoPension` parameter in the
-     *                           `updateCertifFondoPension` method is of type
-     *                           `byte[]`, which means it is an array of bytes.
-     *                           This parameter is used to update the certificate of
-     *                           the pension fund for a specific user
-     *                           identified by their `userId`.
-     */
-    public void updateCertifFondoPension(Long userId, byte[] certifFondoPension) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setCertifFondoPension(certifFondoPension);
-            userRepository.save(user);
-        } else {
-            throw new RuntimeException("Usuario no encontrado");
-        }
-    }
-
-    /**
-     * The function updates the certification ARL of a user identified by their ID
-     * in a Java
-     * application.
-     * 
-     * @param userId    The `userId` parameter is the unique identifier of the user
-     *                  whose `certifArl`
-     *                  needs to be updated.
-     * @param certifArl The `certifArl` parameter in the `updateCertifArl` method is
-     *                  a byte array
-     *                  that represents a certificate related to the user identified
-     *                  by the `userId`. This method
-     *                  updates the `certifArl` field of the user entity in the
-     *                  database with the provided byte
-     *                  array.
-     */
-    public void updateCertifArl(Long userId, byte[] certifArl) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setCertifArl(certifArl);
-            userRepository.save(user);
-        } else {
-            throw new RuntimeException("Usuario no encontrado");
-        }
-    }
-
-    /**
-     * The function updates the bank certificate of a user identified by their ID in
-     * a Java
-     * application.
-     * 
-     * @param userId         The `userId` parameter is the unique identifier of the
-     *                       user whose banking
-     *                       certificate needs to be updated.
-     * @param certifBancario The `certifBancario` parameter in the
-     *                       `updateCertifBancario` method is
-     *                       a byte array that represents the user's banking
-     *                       certificate. This method updates the banking
-     *                       certificate of a user identified by their `userId`. If
-     *                       the user is found in the repository,
-     *                       the method sets the
-     */
-    public void updateCertifBancario(Long userId, byte[] certifBancario) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setCertifBancario(certifBancario);
-            userRepository.save(user);
-        } else {
-            throw new RuntimeException("Usuario no encontrado");
-        }
-    }
-
-    /**
-     * This Java function updates the disciplinary background certificate for a user
-     * identified by
-     * their ID.
-     * 
-     * @param userId                     The `userId` parameter is the unique
-     *                                   identifier of the user for whom the
-     *                                   disciplinary background certificate is
-     *                                   being updated.
-     * @param certifAntecedDisciplinario The parameter `certifAntecedDisciplinario`
-     *                                   is a byte array
-     *                                   that represents the updated certificate of
-     *                                   disciplinary background for a user
-     *                                   identified by
-     *                                   their `userId`. This method updates the
-     *                                   certificate for the specified user in the
-     *                                   database.
-     */
-    public void updateCertifAntecedDisciplinario(Long userId, byte[] certifAntecedDisciplinario) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setCertifAntecedDisciplinario(certifAntecedDisciplinario);
-            userRepository.save(user);
-        } else {
-            throw new RuntimeException("Usuario no encontrado");
-        }
-    }
-
-    /**
-     * The function `updateCertifAntecedFiscales` updates the certificate of
-     * criminal records for a
-     * user identified by their ID.
-     * 
-     * @param userId                The `userId` parameter is the unique identifier
-     *                              of the user for whom the
-     *                              certificate of criminal record
-     *                              (certifAntecedFiscales) is being updated.
-     * @param certifAntecedFiscales The `updateCertifAntecedFiscales` method takes
-     *                              in a `userId`
-     *                              and a byte array `certifAntecedFiscales` as
-     *                              parameters. The `certifAntecedFiscales`
-     *                              parameter represents the updated certificate of
-     *                              criminal record for the user identified by
-     *                              the `userId
-     */
-    public void updateCertifAntecedFiscales(Long userId, byte[] certifAntecedFiscales) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setCertifAntecedFiscales(certifAntecedFiscales);
-            userRepository.save(user);
-        } else {
-            throw new RuntimeException("Usuario no encontrado");
-        }
-    }
-
-    public void updateCertifAntecedPenales(Long userId, byte[] certifAntecedPenales) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setCertifAntecedPenales(certifAntecedPenales);
-            userRepository.save(user);
-        } else {
-            throw new RuntimeException("Usuario no encontrado");
-        }
-    }
-
-    public void updateLibretaMilitar(Long userId, byte[] libretaMilitar) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setLibretaMilitar(libretaMilitar);
-            userRepository.save(user);
-        } else {
-            throw new RuntimeException("Usuario no encontrado");
-        }
-    }
-
-    public void updateCertifMedOcupacional(Long userId, byte[] certifMedOcupacional) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setCertifMedOcupacional(certifMedOcupacional);
-            userRepository.save(user);
-        } else {
-            throw new RuntimeException("Usuario no encontrado");
-        }
-    }
-
-    public void updateReferPersonales(Long userId, byte[] referPersonales) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            user.setReferPersonales(referPersonales);
-            userRepository.save(user);
-        } else {
-            throw new RuntimeException("Usuario no encontrado");
-        }
+        return fileData;
     }
 }
